@@ -4,11 +4,17 @@
 Actuator::Actuator(){
  pinMode(DIRECTION, OUTPUT);
  pinMode(ENABLE, OUTPUT);
- pinMode(STEP, OUTPUT); 
+ pinMode(STEP, OUTPUT);
+ pinMode(RELAY, OUTPUT); 
  count = 0;
  #ifdef DEBUG
    Serial.begin(9600);
  #endif  
+}
+
+void Actuator::set_zero(){
+ count = 0; 
+ Serial.println("Zero point Set");
 }
 // use this to initialize the pins so it's ready to go. 
 // in the future this will find the zero point on the rail
@@ -48,13 +54,34 @@ void Actuator::directions(bool state){
 
 //Moves the motor a certain amount of steps with a certain amount of microseconds in between each step. 
 // 200 microseconds at a maximum speed otherwise the stepper motor doesn't have enough time to step
-void Actuator::steps(int steps, int micro){
+void Actuator::steps(int steps, int micro, bool state){
+  //decide direction
+  directions(state);
  for(int i = 0 ; i <= steps ; i++){
   one_step(micro);
   //if debug is enables this will print out how many steps the motor has taken.
-  #ifdef DEBUG
+  if(state == BACKWARD){
     count++;
-    Serial.println(count);
-  #endif
+  }
+  else{
+    if(state == FORWARD){
+      count--;
+    }
+  } 
  } 
+}
+
+void Actuator::return_zero(){
+ if( count > 0 ){
+   steps(count, 200, FORWARD); 
+ } 
+}
+
+void Actuator::relay_on(bool state){
+  if(state == true){
+    digitalWrite(RELAY, HIGH);
+  }
+  else{
+    digitalWrite(RELAY, LOW);
+  }  
 }
