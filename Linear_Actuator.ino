@@ -10,7 +10,7 @@
 //objects
 Actuator rail;
 LimitSwitch start;
-LimitSwitch backwardS;
+LimitSwitch forwardS;
 timer timer;
 
 //Setup
@@ -25,7 +25,7 @@ void setup(){
   //find limit
   Serial.println("Attemptimg to find Limit");
   rail.enable_motors(true);
-  while(backwardS.CheckLimit()){
+  while(forwardS.CheckLimit()){
       rail.steps(10, 200, FORWARD); //step a tiny amount until the switch is hit
   }
   rail.set_zero();
