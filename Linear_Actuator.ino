@@ -1,6 +1,5 @@
 //Made by Matt Pedler MattJPedler@gmail.com
 
-//Hi Matt! Nice code! you should add header protectors though :P
 
 //Includes
 #include "actuator.h"
